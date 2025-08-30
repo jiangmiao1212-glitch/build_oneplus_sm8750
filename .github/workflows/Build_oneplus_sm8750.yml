@@ -351,7 +351,13 @@ jobs:
           ESCAPED_SUFFIX=$(printf '%s\n' "$DEFAULT_SUFFIX" | sed 's:[\/&]:\\&:g')
           sudo sed -i "s/-4k/$ESCAPED_SUFFIX/g" ./common/arch/arm64/configs/gki_defconfig
           sed -i 's/${scm_version}//' ./common/scripts/setlocalversion
-          
+
+      - name: 🔧 KPM支持
+        run: |
+          cd kernel_workspace/kernel_platform  # 先切换到正确的目录
+          echo "CONFIG_KPM=y" >> ./common/arch/arm64/configs/gki_defconfig
+          sudo sed -i 's/check_defconfig//' ./common/build.config.gki
+
       - name: 🔧 Add sched_ext (写入风驰补丁)
         if: ${{inputs.enable_feature_z }}
         run: |
@@ -374,7 +380,16 @@ jobs:
           cd kernel_workspace/kernel_platform/common
           make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="ccache clang" RUSTC=../../prebuilts/rust/linux-x86/1.73.0b/bin/rustc PAHOLE=../../prebuilts/kernel-build-tools/linux-x86/bin/pahole LD=ld.lld HOSTLD=ld.lld O=out KCFLAGS+=-O2  gki_defconfig
           make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="ccache clang" RUSTC=../../prebuilts/rust/linux-x86/1.73.0b/bin/rustc PAHOLE=../../prebuilts/kernel-build-tools/linux-x86/bin/pahole LD=ld.lld HOSTLD=ld.lld O=out KCFLAGS+=-O2  Image
-       
+
+      - name: 📦 应用KPM补丁
+        run: |
+           cd kernel_workspace/kernel_platform/common/out/arch/arm64/boot || error "进入boot目录失败"
+           curl -LO https://github.com/SukiSU-Ultra/SukiSU_KernelPatch_patch/releases/download/0.12.0/patch_linux || error "下载patch_linux失败"
+           chmod +x patch_linux
+           ./patch_linux || error "应用patch_linux失败"
+           rm -f Image
+           mv oImage Image || error "替换Image失败"
+
       - name: 📦 Make AnyKernel3 (创建Anykernel3)
         run: |
           cp "${GITHUB_WORKSPACE}/.github/workflows/Bin/main.bin" ./

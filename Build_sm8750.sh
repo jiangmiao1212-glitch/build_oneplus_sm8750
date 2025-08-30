@@ -388,16 +388,16 @@ rm -f Image
 mv oImage Image || error "替换Image失败"
 
 # 创建AnyKernel3包
-# info "创建AnyKernel3包..."
-# cd "$WORKSPACE" || error "返回工作目录失败"
-# git clone -q https://github.com/showdo/AnyKernel3.git --depth=1 || info "AnyKernel3已存在"
-# rm -rf ./AnyKernel3/.git
-# rm -f ./AnyKernel3/push.sh
-# cp "$KERNEL_WORKSPACE/kernel_platform/common/out/arch/arm64/boot/Image" ./AnyKernel3/ || error "复制Image失败"
+ info "创建AnyKernel3包..."
+ cd "$WORKSPACE" || error "返回工作目录失败"
+ git clone https://github.com/Kernel-SU/AnyKernel3.git --depth=1 || info "AnyKernel3已存在"
+ rm -rf ./AnyKernel3/.git
+ rm -f ./AnyKernel3/push.sh
+ cp "$KERNEL_WORKSPACE/kernel_platform/common/out/arch/arm64/boot/Image" ./AnyKernel3/ || error "复制Image失败"
 
 # 打包
-# cd AnyKernel3 || error "进入AnyKernel3目录失败"
-# zip -r "AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SuKiSu.zip" ./* || error "打包失败"
+ cd AnyKernel3 || error "进入AnyKernel3目录失败"
+ zip -r "AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SuKiSu.zip" ./* || error "打包失败"
 
 # 创建C盘输出目录（通过WSL访问Windows的C盘）
 WIN_OUTPUT_DIR="/mnt/c/Kernel_Build/${DEVICE_NAME}/"

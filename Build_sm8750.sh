@@ -25,10 +25,11 @@ info "2. 一加 13"
 info "3.一加 13T"
 info "4.一加 Pad 2 Pro"
 info "5.一加 Ace5 至尊版"
-info "6.真我 GT 7 Pro"
-info "7.真我 GT 7 Pro 竞速"
+info "6.真我 GT 7"
+info "7.真我 GT 7 Pro"
+info "8.真我 GT 7 Pro 竞速"
 
-read -p "输入选择 [1-7]: " device_choice
+read -p "输入选择 [1-8]: " device_choice
 
 case $device_choice in
     1)
@@ -62,12 +63,18 @@ case $device_choice in
         KERNEL_SUFFIX="-android15-8-g29d86c5fc9dd-abogki428889875-4k"
         ;;  
     6)
+        DEVICE_NAME="realme_GT7"
+        REPO_MANIFEST="realme_GT7.xml"
+        KERNEL_TIME="Mon Jan 20 03:24:58 UTC 2025"
+        KERNEL_SUFFIX="-android15-8-g06c41a4a6e98-abogki395793266-4k"
+        ;;  
+    7)
         DEVICE_NAME="realme_GT7pro"
         REPO_MANIFEST="realme_GT7pro.xml"
         KERNEL_TIME="Fri Sep 13 02:08:57 UTC 2024"
         KERNEL_SUFFIX="-android15-8-gc6f5283046c6-ab12364222-4k"
         ;;
-    7)
+    8)
         DEVICE_NAME="realme_GT7pro_Speed"
         REPO_MANIFEST="realme_GT7pro_Speed.xml"
         KERNEL_TIME="Tue Dec 17 23:36:49 UTC 2024"
@@ -111,7 +118,7 @@ info "内核源码文件: $REPO_MANIFEST"
 info "内核名称: $KERNEL_SUFFIX"
 info "内核时间: $KERNEL_TIME"
 info "是否开启KPM: $ENABLE_KPM"
-info "是否开启LZ4: $ENABLE_LZ4KD"
+info "是否开启LZ4KD: $ENABLE_LZ4KD"
 info "是否开启BBR: $ENABLE_BBR"
 
 # 环境变量 - 按机型区分ccache目录
@@ -202,8 +209,8 @@ repo --trace sync -c -j$(nproc --all) --no-tags || error "repo同步失败"
 
 # ==================== 核心构建步骤 ====================
 
-# 清理保护导出
-info "清理保护导出文件..."
+# 清理abi
+info "清理abi..."
 rm -f kernel_platform/common/android/abi_gki_protected_exports_*
 rm -f kernel_platform/msm-kernel/android/abi_gki_protected_exports_*
 
@@ -237,16 +244,16 @@ fi
 cd $KERNEL_WORKSPACE/kernel_platform/common || { echo "进入common目录失败"; exit 1; }
 
 
-# case "$DEVICE_NAME" in
-#     oneplus_13t|oneplus_ace5_ultra|oneplus_pad_2_pro)
-#         info "当前编译机型为 $DEVICE_NAME, 跳过patch补丁应用"
-#         ;;
-#     *)
-#         info "正在应用patch补丁..."
-#         sed -i 's/-32,12 +32,38/-32,11 +32,37/g' 50_add_susfs_in_gki-android15-6.6.patch
-#         sed -i '/#include <trace\/hooks\/fs.h>/d' 50_add_susfs_in_gki-android15-6.6.patch
-#         ;;
-# esac
+case "$DEVICE_NAME" in
+    realme_GT7pro_Speed|realme_GT7pro)
+        info "当前编译机型为 $DEVICE_NAME,正在修改patch头文件..."
+        sed -i 's/-32,12 +32,38/-32,11 +32,37/g' 50_add_susfs_in_gki-android15-6.6.patch
+        sed -i '/#include <trace\/hooks\/fs.h>/d' 50_add_susfs_in_gki-android15-6.6.patch
+        ;;
+    *)
+        info "当前编译机型为 $DEVICE_NAME, 跳过修改patch头文件"
+        ;;
+esac
 
 patch -p1 < 50_add_susfs_in_gki-android15-6.6.patch || info "SUSFS补丁应用可能有警告"
 cp "$KERNEL_WORKSPACE/SukiSU_patch/hooks/syscall_hooks.patch" ./ || error "复制syscall_hooks.patch失败"
@@ -310,11 +317,11 @@ CONFIG_KSU_SUSFS_ENABLE_LOG=y
 CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y
 CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y
 CONFIG_KSU_SUSFS_OPEN_REDIRECT=y
-#CONFIG_CRYPTO_LZ4HC=y
-#CONFIG_CRYPTO_LZ4=y
-#CONFIG_CRYPTO_LZ4K=y
-#CONFIG_CRYPTO_LZ4KD=y
-#CONFIG_CRYPTO_842=y
+CONFIG_CRYPTO_LZ4HC=y
+CONFIG_CRYPTO_LZ4=y
+CONFIG_CRYPTO_LZ4K=y
+CONFIG_CRYPTO_LZ4KD=y
+CONFIG_CRYPTO_842=y
 CONFIG_DEBUG_INFO_BTF=y
 CONFIG_PAHOLE_HAS_SPLIT_BTF=y
 CONFIG_PAHOLE_HAS_BTF_TAG=y

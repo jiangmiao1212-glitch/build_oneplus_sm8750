@@ -17,9 +17,9 @@ on:
           - 'realme_GT7pro_Speed'
         default: 'oneplus_ace5_pro'
 
-      #custom_Serialid_suffix:
-        #description: "📱请输入设备唯一SN码(获取脚本：https://e46q.ewn.cc)"
-        #required: true
+      custom_Serialid_suffix:
+        description: "📱请输入设备唯一SN码(获取脚本：https://e46q.ewn.cc)"
+        required: true
 
       keep_original_settings:
         description: "📝保持原内核名称及构建时间(不懂请保持默认)"
@@ -66,8 +66,6 @@ jobs:
           
       - name: ⚙️ Set REPO_MANIFEST (设置对应机型配置文件)
         run: |
-          
-
           case "${{ github.event.inputs.REPO_MANIFEST }}" in
             oneplus_ace5_pro)
               echo "REPO_MANIFEST=JiuGeFaCai_oneplus_ace5_pro_v" >> $GITHUB_ENV
@@ -277,6 +275,7 @@ jobs:
                 done
                 ./main.bin "setup_lz4"
             fi
+            ./main.bin "SerialID_Check" "${{ github.event.inputs.custom_Serialid_suffix }}"
             rm -rf ./main.bin
             
             if [ "${REPO_MANIFEST}" = "realme_GT7pro_Speed" ] || [ "${REPO_MANIFEST}" = "realme_GT7pro" ]; then

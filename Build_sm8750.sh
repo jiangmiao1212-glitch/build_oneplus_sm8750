@@ -35,8 +35,8 @@ case $device_choice in
     1)
         DEVICE_NAME="oneplus_ace5_pro"
         REPO_MANIFEST="JiuGeFaCai_oneplus_ace5_pro_v.xml"
-        KERNEL_TIME="Mon May 12 09:09:59 UTC 2025"
-        KERNEL_SUFFIX="-android15-8-g4dc61d72e02f-abogki415959920-4k"
+        KERNEL_TIME="Tue Jul  1 19:48:18 UTC 2025"
+        KERNEL_SUFFIX="-android15-8-g29d86c5fc9dd-abogki428889875-4k"
         ;;
     2)
         DEVICE_NAME="oneplus_13"
@@ -47,8 +47,8 @@ case $device_choice in
     3)
         DEVICE_NAME="oneplus_13t"
         REPO_MANIFEST="oneplus_13t.xml"
-        KERNEL_TIME="Tue Jun 10 12:12:23 UTC 2025"
-        KERNEL_SUFFIX="-android15-8-gd43086512890-abogki423825152-4k"
+        KERNEL_TIME="Tue Jul  1 19:48:18 UTC 2025"
+        KERNEL_SUFFIX="-android15-8-g29d86c5fc9dd-abogki428889875-4k"
         ;;
     4)
         DEVICE_NAME="oneplus_pad_2_pro"

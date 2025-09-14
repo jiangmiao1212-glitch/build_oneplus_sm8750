@@ -3,7 +3,7 @@
 [![GitHub](https://img.shields.io/badge/-GitHub|@showdo-181717?logo=github\&logoColor=white\&style=flat-square)](https://github.com/showdo/build_oneplus_sm8750)
 [![Telegram](https://img.shields.io/badge/Telegram-Channel-blue.svg?logo=telegram)](https://t.me/qdykernel)
 [![Coolapk|Home](https://img.shields.io/badge/Coolapk%7CHome-3DDC84?style=flat-square\&logo=android\&logoColor=white)](http://www.coolapk.com/u/1624571)
-[![OnePlus Kernel Source Address](https://img.shields.io/badge/OnePlus%20Kernel%20Source%20Address-EB0029?logo=oneplus\&logoColor=white\&style=flat-square)](https://github.com/OnePlusOSS/kernel_manifest) <br><b>This Special thanks for build support to：</b>[![GitHub](https://img.shields.io/badge/-GitHub|@HanKuCha-181717?logo=github\&logoColor=white\&style=flat-square)](https://github.com/HanKuCha/oneplus13_a5p_sukisu)<br>
+[![OnePlus Manifest](https://img.shields.io/badge/OnePlus_Manifest-EB0029?logo=oneplus\&logoColor=white\&style=flat-square)](https://github.com/OnePlusOSS/kernel_manifest) <br><b>This Special thanks for build support to：</b>[![GitHub](https://img.shields.io/badge/-GitHub|@HanKuCha-181717?logo=github\&logoColor=white\&style=flat-square)](https://github.com/HanKuCha/oneplus13_a5p_sukisu)<br>
 
 # This repository provides two build methods
 

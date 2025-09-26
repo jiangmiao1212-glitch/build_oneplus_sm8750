@@ -348,11 +348,11 @@ jobs:
           sudo sed -i "s/-4k/$ESCAPED_SUFFIX/g" ./common/arch/arm64/configs/gki_defconfig
           sed -i 's/${scm_version}//' ./common/scripts/setlocalversion
 
-      - name: 🔧 KPM支持
-        run: |
-          cd kernel_workspace/kernel_platform  # 先切换到正确的目录
-          echo "CONFIG_KPM=y" >> ./common/arch/arm64/configs/gki_defconfig
-          sudo sed -i 's/check_defconfig//' ./common/build.config.gki
+     # - name: 🔧 KPM支持
+       # run: |
+         # cd kernel_workspace/kernel_platform  # 先切换到正确的目录
+         # echo "CONFIG_KPM=y" >> ./common/arch/arm64/configs/gki_defconfig
+          #sudo sed -i 's/check_defconfig//' ./common/build.config.gki
 
       - name: 🔧 Add sched_ext (写入风驰补丁)
         if: ${{inputs.enable_feature_z }}
